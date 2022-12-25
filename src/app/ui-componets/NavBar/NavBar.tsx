@@ -13,7 +13,7 @@ const NavBar: React.FC<NavBarProps> = () => {
       </NavLink>
       <div className={styles.nav_item}>
         <NavLink to="/" className={styles.active}>
-          Home
+          History
         </NavLink>
         <NavLink to="/payload" className={styles.active}>
           Payload

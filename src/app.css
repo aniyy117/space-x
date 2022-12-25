@@ -25,10 +25,11 @@
     box-shadow: rgb(0 0 0 / 10%) 5px 5px 50px;
     display: grid;
     grid-template-columns: 0.25fr 1fr;
+    background-image:url("./app/assets/images/backgroundImage.jpg");
 }
 
 .main{
-    background-image:url("./app/assets/images/backgroundImage.jpg");
+ 
     background-repeat: no-repeat;
     background-origin: content-box;
 }

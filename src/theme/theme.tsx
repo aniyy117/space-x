@@ -21,21 +21,21 @@ const lightTheme = createTheme({
             background: "white",
             borderRadius: "5px",
           },
-          "& .MuiDataGrid-columnHeaders": {
-            color: "white",
-          },
-          "& .MuiIconButton-root": {
-            color: "white",
-          },
-          "& .MuiButtonBase-root": {
-            color: "white",
-          },
-          "& .MuiTypography-root": {
-            color: "white",
-          },
-          "& .MuiInputBase-root": {
-            color: "white",
-          },
+          // "& .MuiDataGrid-columnHeaders": {
+          //   color: "white",
+          // },
+          // "& .MuiIconButton-root": {
+          //   color: "white",
+          // },
+          // "& .MuiButtonBase-root": {
+          //   color: "white",
+          // },
+          // "& .MuiTypography-root": {
+          //   color: "white",
+          // },
+          // "& .MuiInputBase-root": {
+          //   color: "white",
+          // },
         },
       },
     },

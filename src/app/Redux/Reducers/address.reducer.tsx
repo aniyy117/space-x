@@ -70,10 +70,27 @@ const selectFilterderKeys = createSelector(selectors.selectAll, (data) => {
   }));
 });
 
+const selectDataForPagination = createSelector(selectors.selectAll, (data) => {
+  const pageData = [];
+  for (let i = 0; i < data.length; i++) {
+    const newArr = [];
+    for (let j = 0; j < 10; j++) {
+      if (data[i]) {
+        newArr.push(data[i]);
+        i++;
+      }
+    }
+    pageData.push(newArr);
+  }
+
+  return pageData;
+});
+
 const AddressSelectors = Object.assign(
   {},
   {
     selectFilterderKeys,
+    selectDataForPagination,
   },
   selectors
 );

@@ -10,7 +10,7 @@ const Loader = () => {
         display: "flex",
         position: "absolute",
         top: "50%",
-        left: "50%",
+        left: "70%",
         transform: "translate(-50%, -50%)",
         zIndex: 999,
       }}

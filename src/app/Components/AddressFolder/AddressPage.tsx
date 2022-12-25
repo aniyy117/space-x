@@ -12,11 +12,25 @@ import Retry from "../../Core/Retry";
 import { DataGrid, GridToolbar } from "@mui/x-data-grid";
 import Loader from "../../ui-componets/Loader";
 
+import Card from "@mui/material/Card";
+import CardActions from "@mui/material/CardActions";
+import CardContent from "@mui/material/CardContent";
+import Button from "@mui/material/Button";
+import Typography from "@mui/material/Typography";
+import CardHeader from "@mui/material/CardHeader";
+import Pagination from "@mui/material/Pagination";
+import Fade from "@mui/material/Fade";
+
 interface AddressPageProps {}
 
 const AddressPage: React.FC<AddressPageProps> = () => {
   const theme = useSelector((state: RootState) => state.theme);
   const addressData = useSelector(AddressSelectors.selectFilterderKeys);
+  const pageinatedDate = useSelector(AddressSelectors.selectDataForPagination);
+  const [page, setPage] = React.useState(1);
+
+  console.log(pageinatedDate);
+
   useDocumentTitle("Payload");
 
   const handleCol = (data: any) => {
@@ -49,42 +63,149 @@ const AddressPage: React.FC<AddressPageProps> = () => {
   });
 
   return (
-    <Box sx={{ height: "calc(100vh - 6rem)", width: "100%", padding: "10px" }}>
-      <LetSuspense
-        condition={fetchData.match("TRUE")}
-        errorCondition={fetchData.match("ERROR")}
-        errorPlaceholder={<Retry onClick={fetchData.fetch} />}
-        loadingPlaceholder={Loader}
+    <>
+      <Box
+        sx={{
+          width: "100%",
+        }}
       >
-        <DataGrid
-          rows={addressData}
-          columns={handleCol(addressData)}
-          pageSize={30}
-          disableSelectionOnClick
-          experimentalFeatures={{ newEditingApi: true }}
-          components={{ Toolbar: GridToolbar }}
-          // density="compact"
-          getRowClassName={(params) =>
-            theme.darkTheme
-              ? params.indexRelativeToCurrentPage % 2 === 0
-                ? styles.even
-                : styles.odd
-              : params.indexRelativeToCurrentPage % 2 === 0
-              ? styles.even_dark
-              : styles.odd_dark
-          }
-          componentsProps={{
-            toolbar: {
-              showQuickFilter: true,
-              quickFilterProps: { debounceMs: 500 },
-            },
-          }}
+        <Box
           sx={{
-            boxShadow: 2,
+            width: "100%",
+            height: "4rem",
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            position: "sticky",
+            top: 0,
+            background: "rgb(177 176 176 / 50%)",
           }}
+        >
+          <Pagination
+            count={pageinatedDate.length - 1}
+            size="large"
+            onChange={(event: React.ChangeEvent<unknown>, page: number) =>
+              setPage(page)
+            }
+          />
+        </Box>
+        <Fade in={true}>
+          <Box
+            sx={{
+              height: "calc(100vh - 13rem)",
+              width: "100%",
+              padding: "10px",
+              overflow: "auto",
+            }}
+          >
+            <LetSuspense
+              condition={fetchData.match("TRUE")}
+              errorCondition={fetchData.match("ERROR")}
+              errorPlaceholder={<Retry onClick={fetchData.fetch} />}
+              loadingPlaceholder={Loader}
+            >
+              {pageinatedDate.length > 0 &&
+                pageinatedDate[page].map((item: any, index: number) => (
+                  <Card
+                    sx={{
+                      minWidth: 200,
+                      mt: 3,
+                      background: "rgb(177 176 176 / 50%)",
+                    }}
+                  >
+                    <CardHeader
+                      title={item.payload_id}
+                      sx={{
+                        background: "#000000a6",
+                        color: "white",
+                      }}
+                    />
+                    <CardContent
+                      sx={{ display: "flex", justifyContent: "space-around" }}
+                    >
+                      <Box>
+                        <Typography
+                          sx={{ fontSize: 14 }}
+                          color="text.secondary"
+                          gutterBottom
+                        >
+                          Type
+                        </Typography>
+                        <Typography variant="h6">djdjdjj</Typography>
+
+                        <Typography
+                          sx={{ fontSize: 14, mt: 2 }}
+                          color="text.secondary"
+                          gutterBottom
+                        >
+                          CUSTOMER
+                        </Typography>
+                        <Typography variant="h6">djdjdjj</Typography>
+                      </Box>
+                      {/* mass */}
+                      <Box>
+                        <Typography
+                          sx={{ fontSize: 14 }}
+                          color="text.secondary"
+                          gutterBottom
+                        >
+                          MASS
+                        </Typography>
+                        <Typography variant="h6">djdjdjj</Typography>
+                        {/* orbit */}
+                        <Typography
+                          sx={{ fontSize: 14, mt: 2 }}
+                          color="text.secondary"
+                          gutterBottom
+                        >
+                          ORBIT
+                        </Typography>
+                        <Typography variant="h6">djdjdjj</Typography>
+                      </Box>
+                      {/* third */}
+                      <Box>
+                        <Typography
+                          sx={{ fontSize: 14 }}
+                          color="text.secondary"
+                          gutterBottom
+                        >
+                          MASS
+                        </Typography>
+                        <Typography variant="h6">djdjdjj</Typography>
+                        {/* orbit */}
+                        <Typography
+                          sx={{ fontSize: 14, mt: 2 }}
+                          color="text.secondary"
+                          gutterBottom
+                        >
+                          ORBIT
+                        </Typography>
+                        <Typography variant="h6">djdjdjj</Typography>
+                      </Box>
+                    </CardContent>
+                  </Card>
+                ))}
+            </LetSuspense>
+          </Box>
+        </Fade>
+      </Box>
+      <Box
+        sx={{
+          width: "100%",
+          margin: "7px",
+          display: "flex",
+          justifyContent: "center",
+        }}
+      >
+        <Pagination
+          count={pageinatedDate.length - 1}
+          size="large"
+          onChange={(event: React.ChangeEvent<unknown>, page: number) =>
+            setPage(page)
+          }
         />
-      </LetSuspense>
-    </Box>
+      </Box>
+    </>
   );
 };
 
