@@ -7,15 +7,37 @@ import { RootState } from "../../Redux/storeConfigurations";
 import { useDocumentTitle } from "../../Core/CustomHooks/useDocumentTitle";
 import { getAddress, resetAddress } from "../../Redux/Actions/history.actions";
 import { AddressSelectors } from "../../Redux/Reducers/address.reducer";
+import LetSuspense from "../../Core/LetSuspense";
+import Retry from "../../Core/Retry";
+import { DataGrid, GridToolbar } from "@mui/x-data-grid";
+import Loader from "../../ui-componets/Loader";
 
 interface AddressPageProps {}
 
 const AddressPage: React.FC<AddressPageProps> = () => {
   const theme = useSelector((state: RootState) => state.theme);
-  const addressData = useSelector(AddressSelectors.selectAll);
-  useDocumentTitle("History Page");
+  const addressData = useSelector(AddressSelectors.selectFilterderKeys);
+  useDocumentTitle("Payload");
 
-  console.log(addressData, "historyData");
+  const handleCol = (data: any) => {
+    if (data.length === 0) return [];
+    const columns: any = Object.keys(data[0]).map(
+      (item: any, index: number) => {
+        return {
+          field: item,
+          headerName: item,
+          width: 200,
+          editable: false,
+          // cellClassName: styles.col,
+          // renderCell: (params) => {
+          //   return <span>{numberFormat(params.row.price)}</span>;
+          // },
+        };
+      }
+    );
+
+    return columns;
+  };
 
   const fetchData = useQueryDispatch({
     query: {
@@ -27,13 +49,42 @@ const AddressPage: React.FC<AddressPageProps> = () => {
   });
 
   return (
-    <div id="AddressPage" className={styles.container}>
-      <Box
-        sx={{ height: "calc(100vh - 2rem)", width: "100%", padding: "10px" }}
+    <Box sx={{ height: "calc(100vh - 6rem)", width: "100%", padding: "10px" }}>
+      <LetSuspense
+        condition={fetchData.match("TRUE")}
+        errorCondition={fetchData.match("ERROR")}
+        errorPlaceholder={<Retry onClick={fetchData.fetch} />}
+        loadingPlaceholder={Loader}
       >
-        <h1>history</h1>
-      </Box>
-    </div>
+        <DataGrid
+          rows={addressData}
+          columns={handleCol(addressData)}
+          pageSize={30}
+          disableSelectionOnClick
+          experimentalFeatures={{ newEditingApi: true }}
+          components={{ Toolbar: GridToolbar }}
+          // density="compact"
+          getRowClassName={(params) =>
+            theme.darkTheme
+              ? params.indexRelativeToCurrentPage % 2 === 0
+                ? styles.even
+                : styles.odd
+              : params.indexRelativeToCurrentPage % 2 === 0
+              ? styles.even_dark
+              : styles.odd_dark
+          }
+          componentsProps={{
+            toolbar: {
+              showQuickFilter: true,
+              quickFilterProps: { debounceMs: 500 },
+            },
+          }}
+          sx={{
+            boxShadow: 2,
+          }}
+        />
+      </LetSuspense>
+    </Box>
   );
 };
 

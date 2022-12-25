@@ -38,6 +38,7 @@ const columns: GridColDef[] = [
       return <span>{numberFormat(params.row.price)}</span>;
     },
   },
+  
   {
     field: "time",
     headerName: "Time",

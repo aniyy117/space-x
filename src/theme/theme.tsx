@@ -8,7 +8,7 @@ const lightTheme = createTheme({
     MuiCssBaseline: {
       styleOverrides: {
         body: {
-          scrollbarColor: "#6b6b6b #2b2b2b",
+          scrollbarColor: "white",
           "&::-webkit-scrollbar-track": {
             backgroundColor: "#f5f5f5",
             borderRadius: "5px",
@@ -18,8 +18,23 @@ const lightTheme = createTheme({
             borderRadius: "5px",
           },
           "&::-webkit-scrollbar-thumb, & *::-webkit-scrollbar-thumb": {
-            backgroundImage: "linear-gradient(#09C6F9, #045DE9 )",
+            background: "white",
             borderRadius: "5px",
+          },
+          "& .MuiDataGrid-columnHeaders": {
+            color: "white",
+          },
+          "& .MuiIconButton-root": {
+            color: "white",
+          },
+          "& .MuiButtonBase-root": {
+            color: "white",
+          },
+          "& .MuiTypography-root": {
+            color: "white",
+          },
+          "& .MuiInputBase-root": {
+            color: "white",
           },
         },
       },
