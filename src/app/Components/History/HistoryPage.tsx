@@ -1,6 +1,5 @@
 import React from "react";
 import { useSelector } from "react-redux";
-import { InstrumentsSelectors } from "../../Redux/Reducers/instrument.reducer";
 import styles from "./HistoryPage.module.scss";
 import { Box, Typography } from "@mui/material";
 import { useQueryDispatch } from "../../Core/CustomHooks/useQueryDispatch";

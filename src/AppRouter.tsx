@@ -10,9 +10,7 @@ import { lightTheme, darkTheme } from "./theme/theme";
 import HistoryPage from "./app/Components/History/HistoryPage";
 import AddressPage from "./app/Components/AddressFolder/AddressPage";
 import NavBar from "./app/ui-componets/NavBar/NavBar";
-const StocksPage = React.lazy(
-  () => import("./app/Components/StocksPage/StocksPage")
-);
+
 const QuotesPage = React.lazy(
   () => import("./app/Components/QuotesPage/QuotesPage")
 );

@@ -11,17 +11,12 @@ import {
 import { ThunkAction } from "redux-thunk";
 import { configureStore } from "@reduxjs/toolkit";
 import logger from "redux-logger";
-import {
-  InstrumentsReducer,
-  InstrumentsReducerInit,
-} from "./Reducers/instrument.reducer";
 import { QuotesReducer, QuotesReducerInit } from "./Reducers/quotes.reducer";
 import { ThemeReducer, ThemeReducerInit } from "./Slice/theme.slice";
 import { HistoryReducer, HistoryReducerInit } from "./Reducers/history.reducer";
 import { AddressReducer, AddressReducerInit } from "./Reducers/address.reducer";
 
 const reducers = combineReducers({
-  instruments: InstrumentsReducer,
   quotes: QuotesReducer,
   theme: ThemeReducer,
   history: HistoryReducer,
@@ -31,7 +26,6 @@ const reducers = combineReducers({
 export type RootState = ReturnType<typeof reducers>;
 
 const defaultState: RootState = {
-  instruments: InstrumentsReducerInit,
   quotes: QuotesReducerInit,
   theme: ThemeReducerInit,
   history: HistoryReducerInit,
