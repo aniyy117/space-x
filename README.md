@@ -2,8 +2,19 @@
 Yo, what's up guys! 🥳
 
 This repo contains Frontend Developer Programming challenge 🌠
+# Preview 
 
-<!-- # Preview -->
+
+### Desktop View
+![image description](./src/app/assets/images/desk.png)
+
+![image description](./src/app/assets/images/historydesk.png)
+
+### Mobile View
+![image description](./src/app/assets/images/phone.png)
+
+### Quotes Page in dark mode
+![image description](./src/app/assets/images/payload_phone.png)
 
 # Install
 
