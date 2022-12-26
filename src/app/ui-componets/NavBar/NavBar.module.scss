@@ -28,3 +28,36 @@
      }
     }
 }
+
+
+
+.container_small{
+    display: none;
+}
+
+// media query
+@media screen and (max-width: 820px) {
+    .container {
+        display: none;
+    }
+    .container_small {
+        display: flex;
+        justify-content: space-between;
+        flex-direction: row;
+        padding: 0.5rem 1rem;
+        background-color: unset;
+        box-shadow: unset;
+    }
+    a {
+        text-decoration: none;
+        color: #000;
+        font-size: 1.5rem;
+        font-weight: 600;
+        margin-bottom: 1rem;
+        transition: all 0.3s ease-in-out;
+        &:hover {
+            color: #f50057;
+        }
+     }
+    
+}

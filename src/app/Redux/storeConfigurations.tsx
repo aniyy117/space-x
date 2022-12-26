@@ -11,13 +11,11 @@ import {
 import { ThunkAction } from "redux-thunk";
 import { configureStore } from "@reduxjs/toolkit";
 import logger from "redux-logger";
-import { QuotesReducer, QuotesReducerInit } from "./Reducers/quotes.reducer";
 import { ThemeReducer, ThemeReducerInit } from "./Slice/theme.slice";
 import { HistoryReducer, HistoryReducerInit } from "./Reducers/history.reducer";
 import { AddressReducer, AddressReducerInit } from "./Reducers/address.reducer";
 
 const reducers = combineReducers({
-  quotes: QuotesReducer,
   theme: ThemeReducer,
   history: HistoryReducer,
   address: AddressReducer,
@@ -26,7 +24,6 @@ const reducers = combineReducers({
 export type RootState = ReturnType<typeof reducers>;
 
 const defaultState: RootState = {
-  quotes: QuotesReducerInit,
   theme: ThemeReducerInit,
   history: HistoryReducerInit,
   address: AddressReducerInit,

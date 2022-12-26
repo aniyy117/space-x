@@ -27,8 +27,6 @@ const HistoryPage: React.FC<HistoryPageProps> = () => {
   const historyData = useSelector(HistorySelectors.selectAll);
   useDocumentTitle("History Page");
 
-  console.log(historyData, "historyData");
-
   const fetchData = useQueryDispatch({
     query: {
       action: getHistory,
@@ -41,7 +39,7 @@ const HistoryPage: React.FC<HistoryPageProps> = () => {
   return (
     <Box
       sx={{
-        height: "calc(100vh - 5rem)",
+        height: "calc(100vh - 7rem)",
         width: "100%",
         overflowY: "auto",
       }}
@@ -49,7 +47,7 @@ const HistoryPage: React.FC<HistoryPageProps> = () => {
       <Timeline position="alternate">
         {historyData.map((item, index) => {
           return (
-            <TimelineItem>
+            <TimelineItem key={index}>
               <TimelineSeparator>
                 <TimelineDot />
                 <TimelineConnector />

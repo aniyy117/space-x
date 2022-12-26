@@ -7,12 +7,13 @@ import { ToastContainer } from "react-toastify";
 import { RootState, storeConfig } from "./app/Redux/storeConfigurations";
 import { CssBaseline, ThemeProvider } from "@mui/material";
 import { lightTheme, darkTheme } from "./theme/theme";
-import HistoryPage from "./app/Components/History/HistoryPage";
+// import HistoryPage from "./app/Components/History/HistoryPage";
 import AddressPage from "./app/Components/AddressFolder/AddressPage";
 import NavBar from "./app/ui-componets/NavBar/NavBar";
+import Loader from "./app/ui-componets/Loader";
 
-const QuotesPage = React.lazy(
-  () => import("./app/Components/QuotesPage/QuotesPage")
+const HistoryPage = React.lazy(
+  () => import("./app/Components/History/HistoryPage")
 );
 
 export const store = storeConfig();
@@ -33,7 +34,7 @@ function AppRouter() {
             <div className="content">
               <NavBar />
               <main className="main">
-                <Suspense fallback={<CircularProgress />}>
+                <Suspense fallback={<Loader />}>
                   <ToastContainer className="unselectable" />
                   <Switch>
                     <Route path="/" component={HistoryPage} exact={true} />

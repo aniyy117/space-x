@@ -1,6 +1,5 @@
 import React from "react";
 import { useSelector } from "react-redux";
-import styles from "./AddressPage.module.scss";
 import { Box } from "@mui/material";
 import { useQueryDispatch } from "../../Core/CustomHooks/useQueryDispatch";
 import { RootState } from "../../Redux/storeConfigurations";
@@ -9,49 +8,32 @@ import { getAddress, resetAddress } from "../../Redux/Actions/history.actions";
 import { AddressSelectors } from "../../Redux/Reducers/address.reducer";
 import LetSuspense from "../../Core/LetSuspense";
 import Retry from "../../Core/Retry";
-import { DataGrid, GridToolbar } from "@mui/x-data-grid";
 import Loader from "../../ui-componets/Loader";
 
 import Card from "@mui/material/Card";
-import CardActions from "@mui/material/CardActions";
+
 import CardContent from "@mui/material/CardContent";
-import Button from "@mui/material/Button";
+
 import Typography from "@mui/material/Typography";
 import CardHeader from "@mui/material/CardHeader";
 import Pagination from "@mui/material/Pagination";
 import Fade from "@mui/material/Fade";
+import SearchBar from "../../ui-componets/SearchBar/Searchbar";
+import { useTheme } from "@mui/material/styles";
+import useMediaQuery from "@mui/material/useMediaQuery";
 
 interface AddressPageProps {}
 
 const AddressPage: React.FC<AddressPageProps> = () => {
-  const theme = useSelector((state: RootState) => state.theme);
-  const addressData = useSelector(AddressSelectors.selectFilterderKeys);
-  const pageinatedDate = useSelector(AddressSelectors.selectDataForPagination);
-  const [page, setPage] = React.useState(1);
-
-  console.log(pageinatedDate);
+  const [page, setPage] = React.useState<number>(0);
+  const [searchQuery, setSearchQuery] = React.useState<string>("");
+  const pageinatedDate = useSelector((state: RootState) =>
+    AddressSelectors.selectFilterData(state, searchQuery)
+  );
+  const theme = useTheme();
+  const matches = useMediaQuery(theme.breakpoints.up("sm"));
 
   useDocumentTitle("Payload");
-
-  const handleCol = (data: any) => {
-    if (data.length === 0) return [];
-    const columns: any = Object.keys(data[0]).map(
-      (item: any, index: number) => {
-        return {
-          field: item,
-          headerName: item,
-          width: 200,
-          editable: false,
-          // cellClassName: styles.col,
-          // renderCell: (params) => {
-          //   return <span>{numberFormat(params.row.price)}</span>;
-          // },
-        };
-      }
-    );
-
-    return columns;
-  };
 
   const fetchData = useQueryDispatch({
     query: {
@@ -62,13 +44,20 @@ const AddressPage: React.FC<AddressPageProps> = () => {
     dependency: [],
   });
 
+  const handleQueryChange = (query: string) => {
+    setPage(0);
+    setSearchQuery(query);
+  };
+
   return (
     <>
       <Box
         sx={{
           width: "100%",
+          height: "calc(100vh - 9rem)",
         }}
       >
+        {/* search Box */}
         <Box
           sx={{
             width: "100%",
@@ -78,21 +67,17 @@ const AddressPage: React.FC<AddressPageProps> = () => {
             alignItems: "center",
             position: "sticky",
             top: 0,
-            background: "rgb(177 176 176 / 50%)",
           }}
+          id="searchBox"
         >
-          <Pagination
-            count={pageinatedDate.length - 1}
-            size="large"
-            onChange={(event: React.ChangeEvent<unknown>, page: number) =>
-              setPage(page)
-            }
-          />
+          <SearchBar setSearchQuery={handleQueryChange} />
         </Box>
+        {/* search Box */}
+        {/* card div */}
         <Fade in={true}>
           <Box
             sx={{
-              height: "calc(100vh - 13rem)",
+              height: "calc(100vh - 14rem)",
               width: "100%",
               padding: "10px",
               overflow: "auto",
@@ -104,14 +89,15 @@ const AddressPage: React.FC<AddressPageProps> = () => {
               errorPlaceholder={<Retry onClick={fetchData.fetch} />}
               loadingPlaceholder={Loader}
             >
-              {pageinatedDate.length > 0 &&
+              {pageinatedDate.length > 0 ? (
                 pageinatedDate[page].map((item: any, index: number) => (
                   <Card
                     sx={{
                       minWidth: 200,
                       mt: 3,
-                      background: "rgb(177 176 176 / 50%)",
+                      background: "rgb(177 176 176 / 90%)",
                     }}
+                    key={index}
                   >
                     <CardHeader
                       title={item.payload_id}
@@ -121,9 +107,13 @@ const AddressPage: React.FC<AddressPageProps> = () => {
                       }}
                     />
                     <CardContent
-                      sx={{ display: "flex", justifyContent: "space-around" }}
+                      sx={{
+                        display: "grid",
+                        gridTemplateColumns: "1fr 1fr 1fr",
+                      }}
                     >
                       <Box>
+                        {/* type */}
                         <Typography
                           sx={{ fontSize: 14 }}
                           color="text.secondary"
@@ -131,8 +121,11 @@ const AddressPage: React.FC<AddressPageProps> = () => {
                         >
                           Type
                         </Typography>
-                        <Typography variant="h6">djdjdjj</Typography>
-
+                        <Typography variant="h6">
+                          {item.payload_type}
+                        </Typography>
+                        {/* type */}
+                        {/* CUSTOMER */}
                         <Typography
                           sx={{ fontSize: 14, mt: 2 }}
                           color="text.secondary"
@@ -140,10 +133,12 @@ const AddressPage: React.FC<AddressPageProps> = () => {
                         >
                           CUSTOMER
                         </Typography>
-                        <Typography variant="h6">djdjdjj</Typography>
+                        <Typography variant="h6">{item.customers}</Typography>
+                        {/* CUSTOMER */}
                       </Box>
-                      {/* mass */}
+                      {/* 2nd */}
                       <Box>
+                        {/* mass */}
                         <Typography
                           sx={{ fontSize: 14 }}
                           color="text.secondary"
@@ -151,7 +146,12 @@ const AddressPage: React.FC<AddressPageProps> = () => {
                         >
                           MASS
                         </Typography>
-                        <Typography variant="h6">djdjdjj</Typography>
+                        <Typography variant="h6">
+                          {item.payload_mass_kg != "0"
+                            ? `${item.payload_mass_kg} kg`
+                            : "-"}
+                        </Typography>
+                        {/* mass */}
                         {/* orbit */}
                         <Typography
                           sx={{ fontSize: 14, mt: 2 }}
@@ -160,7 +160,8 @@ const AddressPage: React.FC<AddressPageProps> = () => {
                         >
                           ORBIT
                         </Typography>
-                        <Typography variant="h6">djdjdjj</Typography>
+                        <Typography variant="h6">{item.orbit}</Typography>
+                        {/* orbit */}
                       </Box>
                       {/* third */}
                       <Box>
@@ -169,9 +170,9 @@ const AddressPage: React.FC<AddressPageProps> = () => {
                           color="text.secondary"
                           gutterBottom
                         >
-                          MASS
+                          Nationality
                         </Typography>
-                        <Typography variant="h6">djdjdjj</Typography>
+                        <Typography variant="h6">{item.nationality}</Typography>
                         {/* orbit */}
                         <Typography
                           sx={{ fontSize: 14, mt: 2 }}
@@ -180,30 +181,44 @@ const AddressPage: React.FC<AddressPageProps> = () => {
                         >
                           ORBIT
                         </Typography>
-                        <Typography variant="h6">djdjdjj</Typography>
+                        <Typography variant="h6">
+                          {item.manufacturer}
+                        </Typography>
                       </Box>
                     </CardContent>
                   </Card>
-                ))}
+                ))
+              ) : (
+                <Typography
+                  variant="h6"
+                  sx={{ textAlign: "center", color: "white" }}
+                >
+                  No Data Found
+                </Typography>
+              )}
             </LetSuspense>
           </Box>
         </Fade>
-      </Box>
-      <Box
-        sx={{
-          width: "100%",
-          margin: "7px",
-          display: "flex",
-          justifyContent: "center",
-        }}
-      >
-        <Pagination
-          count={pageinatedDate.length - 1}
-          size="large"
-          onChange={(event: React.ChangeEvent<unknown>, page: number) =>
-            setPage(page)
-          }
-        />
+
+        <Box
+          sx={{
+            width: "100%",
+            marginTop: "7px",
+            display: "flex",
+            justifyContent: "center",
+          }}
+        >
+          {pageinatedDate.length > 1 && (
+            <Pagination
+              color="secondary"
+              count={pageinatedDate.length - 1}
+              size={matches ? "large" : "small"}
+              onChange={(event: React.ChangeEvent<unknown>, page: number) =>
+                setPage(page - 1)
+              }
+            />
+          )}
+        </Box>
       </Box>
     </>
   );

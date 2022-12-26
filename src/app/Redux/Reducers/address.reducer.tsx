@@ -7,6 +7,7 @@ import {
 import { ADMIN } from "../../services/admin.service";
 import { RootState } from "../storeConfigurations";
 import { getAddress, resetAddress } from "../Actions/history.actions";
+import { fuzzySearch } from "../../ui-componets/utils/fuzzySearch";
 
 export interface Address {
   payload_id: string;
@@ -59,38 +60,47 @@ const selectors = Addressadaptor.getSelectors<RootState>(
 
 const selectFilterderKeys = createSelector(selectors.selectAll, (data) => {
   return data.map((item) => ({
-    id: item.payload_id,
-    Payload: item.payload_id,
-    "Payload Type": item.payload_type,
-    Reused: item.reused,
-    Nationality: item.nationality,
-    Manufacturer: item.manufacturer,
-    "Payload Mass/kg": item.payload_mass_kg,
-    orbit: item.orbit,
+    payload_id: item.payload_id,
+    payload_type: item.payload_type,
+    payload_mass_kg: item.payload_mass_kg
+      ? item.payload_mass_kg.toString()
+      : "0",
+    payload_mass_lbs: item.payload_mass_lbs
+      ? item.payload_mass_lbs.toString()
+      : "0",
+    nationality: item.nationality ? item.nationality : "-",
+    manufacturer: item.manufacturer ? item.manufacturer : "-",
+    orbit: item.orbit ? item.orbit : "-",
+    customers: item.customers ? item.customers.join(", ") : "-",
   }));
 });
 
-const selectDataForPagination = createSelector(selectors.selectAll, (data) => {
-  const pageData = [];
-  for (let i = 0; i < data.length; i++) {
-    const newArr = [];
-    for (let j = 0; j < 10; j++) {
-      if (data[i]) {
-        newArr.push(data[i]);
-        i++;
+const selectFilterData = createSelector(
+  selectFilterderKeys,
+  (state: RootState, quary: string | "") => quary,
+  (data, quary) => {
+    const filterData = fuzzySearch(data, quary);
+    const pageData = [];
+    for (let i = 0; i < filterData.length; i++) {
+      const newArr = [];
+      for (let j = 0; j < 10; j++) {
+        if (filterData[i]) {
+          newArr.push(filterData[i]);
+          i++;
+        }
       }
+      pageData.push(newArr);
     }
-    pageData.push(newArr);
-  }
 
-  return pageData;
-});
+    return pageData;
+  }
+);
 
 const AddressSelectors = Object.assign(
   {},
   {
     selectFilterderKeys,
-    selectDataForPagination,
+    selectFilterData,
   },
   selectors
 );

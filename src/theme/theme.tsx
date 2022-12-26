@@ -3,6 +3,9 @@ import { createTheme } from "@mui/material/styles";
 const lightTheme = createTheme({
   palette: {
     mode: "light",
+    secondary: {
+      main: "#fff",
+    },
   },
   components: {
     MuiCssBaseline: {
@@ -20,6 +23,15 @@ const lightTheme = createTheme({
           "&::-webkit-scrollbar-thumb, & *::-webkit-scrollbar-thumb": {
             background: "white",
             borderRadius: "5px",
+          },
+          "& .MuiFormControl-root": {
+            color: "white",
+            "& .MuiFormLabel-root": {
+              color: "white",
+            },
+          },
+          "& .MuiInputBase-root": {
+            color: "white",
           },
           // "& .MuiDataGrid-columnHeaders": {
           //   color: "white",
